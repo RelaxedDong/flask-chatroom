@@ -1,0 +1,128 @@
+﻿{% from '__marcro.html' import static %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<title>Flask 在线聊天</title>
+<meta name="csrf-token" content="{{ csrf_token() }}">
+
+<link rel="stylesheet" type="text/css" href="{{ url_for("static",filename='css/chat.css') }}" />
+
+<script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+<script src="{{ url_for("static",filename='js/sock_io.js') }}"></script>
+<script src="{{ url_for("static",filename='js/my_js/zlajax.js') }}"></script>
+<script type="text/javascript" src="{{ url_for("static",filename='js/my_js/chat.js') }}"></script>
+<script type="text/javascript" src="{{ url_for("static",filename='js/my_js/utils.js') }}"></script>
+<script src="{{ static("js/my_js/login.js") }}"></script>
+
+<!--[if lt IE 7]>
+<script src="js/IE7.js" type="text/javascript"></script>
+<![endif]-->
+<!--[if IE 6]>
+<script src="js/iepng.js" type="text/javascript"></script>
+<script type="text/javascript">
+EvPNG.fix('body, div, ul, img, li, input, a, span ,label'); 
+</script>
+<![endif]-->
+</head>
+<body>
+    <div class="content">
+        <div class="chatBox">
+            <div class="chatLeft">
+                <div class="chat01">
+                    <div class="chat01_title">
+                        <ul class="talkTo">
+                            <li><a href="javascript:;">Flask-socketio聊天室</a></li>
+                        </ul>
+                        <a id="close_btn" class="logoutBtn" data-user-id="{{ g.front_user_id }}">退出</a>
+                    </div>
+                    <div class="chat01_content">
+                        {% for messsage in messsages %}
+                          <div class="message clearfix">
+                            <div class="wrap-text">
+                                <h5 class="clearfix">{{ messsage.username }}</h5>
+                                {{ messsage.msg|content|safe }}
+                            </div>
+                            <div class="wrap-ri">
+                                <div clsss="clearfix"><span>{{ messsage.create_time }}</span></div>
+                            </div><div style="clear:both;"></div></div>
+                        {% endfor %}
+                    </div>
+                </div>
+                <div class="chat02">
+                    <div class="chat02_title">
+                        <a class="chat02_title_btn ctb01" href="javascript:;"></a>
+{#<a class="chat02_title_btn ctb02"#}
+{#                            href="javascript:;" title="选择文件">#}
+{#                            <embed width="15" height="16" flashvars="swfid=2556975203&amp;maxSumSize=50&amp;maxFileSize=50&amp;maxFileNum=1&amp;multiSelect=0&amp;uploadAPI=http%3A%2F%2Fupload.api.weibo.com%2F2%2Fmss%2Fupload.json%3Fsource%3D209678993%26tuid%3D1887188824&amp;initFun=STK.webim.ui.chatWindow.msgToolBar.upload.initFun&amp;sucFun=STK.webim.ui.chatWindow.msgToolBar.upload.sucFun&amp;errFun=STK.webim.ui.chatWindow.msgToolBar.upload.errFun&amp;beginFun=STK.webim.ui.chatWindow.msgToolBar.upload.beginFun&amp;showTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.showTipFun&amp;hiddenTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.hiddenTipFun&amp;areaInfo=0-16|12-16&amp;fExt=*.jpg;*.gif;*.jpeg;*.png|*&amp;fExtDec=选择图片|选择文件"#}
+{#                                data="upload.swf" wmode="transparent" bgcolor="" allowscriptaccess="always" allowfullscreen="true"#}
+{#                                scale="noScale" menu="false" type="application/x-shockwave-flash" src="http://service.weibo.com/staticjs/tools/upload.swf?v=36c9997f1313d1c4"#}
+{#                                id="swf_3140">#}
+{#                        </a><a class="chat02_title_btn ctb03" href="javascript:;" title="选择附件">#}
+{#                            <embed width="15" height="16" flashvars="swfid=2556975203&amp;maxSumSize=50&amp;maxFileSize=50&amp;maxFileNum=1&amp;multiSelect=0&amp;uploadAPI=http%3A%2F%2Fupload.api.weibo.com%2F2%2Fmss%2Fupload.json%3Fsource%3D209678993%26tuid%3D1887188824&amp;initFun=STK.webim.ui.chatWindow.msgToolBar.upload.initFun&amp;sucFun=STK.webim.ui.chatWindow.msgToolBar.upload.sucFun&amp;errFun=STK.webim.ui.chatWindow.msgToolBar.upload.errFun&amp;beginFun=STK.webim.ui.chatWindow.msgToolBar.upload.beginFun&amp;showTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.showTipFun&amp;hiddenTipFun=STK.webim.ui.chatWindow.msgToolBar.upload.hiddenTipFun&amp;areaInfo=0-16|12-16&amp;fExt=*.jpg;*.gif;*.jpeg;*.png|*&amp;fExtDec=选择图片|选择文件"#}
+{#                                data="upload.swf" wmode="transparent" bgcolor="" allowscriptaccess="always" allowfullscreen="true"#}
+{#                                scale="noScale" menu="false" type="application/x-shockwave-flash" src="http://service.weibo.com/staticjs/tools/upload.swf?v=36c9997f1313d1c4"#}
+{#                                id="swf_3140">#}
+{#                        </a>#}
+{#                        <label class="chat02_title_t">#}
+{#                            <a href="chat.htm" target="_blank">聊天记录</a></label>#}
+                        <div class="wl_faces_box">
+                            <div class="wl_faces_content">
+                                <div class="title">
+                                    <ul>
+                                        <li class="title_name">常用表情</li><li class="wl_faces_close"><span>&nbsp;</span></li></ul>
+                                </div>
+                                <div class="wl_faces_main">
+                                    <ul>
+                                        {% for x in range(1,60) %}
+                                            <li><a href="javascript:;">
+                                                <img src="static/img/emo_{{x}}.gif" /></a>
+                                            </li>
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </div>
+                            <div class="wlf_icon">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="chat02_content">
+                        <textarea id="textarea"></textarea>
+                    </div>
+                    <div class="chat02_bar">
+                        <ul>
+                            <li style="left: 20px; top: 10px; padding-left: 30px;">聊天桌面，24小时在线为您服务！</li>
+                            <li style="right: 5px; top: 5px;"><a href="javascript:;">
+                                <img onclick="Mybtn()" src="{{ url_for("static",filename='img/send_btn.jpg') }}"></a></li>
+                            <li id="user_id" style="display: none">{{ g.front_user_id }}</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+                   <div class="chatRight">
+                <div class="chat03">
+                    <div class="chat03_title">
+                        <label class="chat03_title_t">
+                            小朋友在线 列表</label>
+                    </div>
+                    <div class="chat03_content">
+                        <ul>
+                            {% for user in logined_users %}
+                                <li class="{{ user.username }}">
+                                    <label class="online">
+                                    </label>
+                                    <a href="javascript:;">
+                                        <img src="{{ static("img/head/origin.jpg") }}"></a><a href="javascript:;" class="chat03_name">{{ user.username }}</a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div style="clear: both;">
+            </div>
+        </div>
+    </div>
+</ul>
+</body>
+</html>

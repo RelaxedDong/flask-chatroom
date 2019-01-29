@@ -1,0 +1,19 @@
+{% from '__marcro.html' import static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <script src="https://cdn.staticfile.org/jquery/1.10.2/jquery.min.js"></script>
+    <script src="{{ url_for("static",filename='js/sock_io.js') }}"></script>
+    <script type="text/javascript" src="{{ url_for("static",filename='js/my_js/chat.js') }}"></script>
+    <script src="{{ static("js/my_js/zlajax.js") }}"></script>
+    <script src="{{ static("js/my_js/login.js") }}"></script>
+</head>
+<body>
+    <label for="use"><input type="text" name="username" id="use"></label>
+    <label for="pwd"><input type="text" name="password" id="pwd"></label>
+    <button id="submitBtn">立即登陆</button>
+</form>
+</body>
+</html>
